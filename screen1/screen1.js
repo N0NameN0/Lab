@@ -9,15 +9,15 @@ var MyMouseTracker;
 var mouseX=0;
 var mouseY=0;
 
-var font_width=32;
-var font_height=32;
-
 var bar_pos=[];
 for(i=0; i<bar_nb; i++){
-	bar_pos[i]=0
+	bar_pos[i]=0;
 }
 
+var font_width=32;
+var font_height=32;
 var myfont = new image('font1.png');
+
 var mycanvas;
 var mycanvasscrolltext;
 var myscrolltext;
@@ -56,6 +56,8 @@ function go(){
 	if (mycanvas.MouseButt==1) {    
 		bar_pos[Math.round((mouseX-bar_width/2)/bar_width)]=mouseY;
 	}
+
+	document.getElementById('curveinfo').value = "var bar_pos=["+bar_pos.join(',')+"];";
 
     MyMouseTracker.MouseUpdate();
 	requestAnimFrame( go );
