@@ -29,7 +29,7 @@ function init(){
 
 	myfont.initTile(font_width,font_height,32);
     myscrolltext = new scrolltext_horizontal();
-    myscrolltext.scrtxt="HELLO AND WELCOME TO        NONAMENO       THIS LITTLE FUCKIN SCROLLTEXT";
+    myscrolltext.scrtxt="HELLO AND WELCOME TO THIS LITTLE LABTRO. IDEA FROM DCK ON ATARI ST.....   ";
     myscrolltext.init(mycanvasscrolltext,myfont,4);
 
 	go();
