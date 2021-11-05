@@ -19,6 +19,8 @@ var mycanvas;
 var mycanvasscrolltext;
 var myscrolltext;
 
+var bar_offset=0;
+
 
 function init(){
 	mycanvas=new canvas(width,height,"main");
@@ -33,6 +35,23 @@ function init(){
     myscrolltext.scrtxt="HELLO AND WELCOME TO THIS LITTLE LABTRO. IDEA FROM DCK ON ATARI ST.....   ";
     myscrolltext.init(mycanvasscrolltext,myfont,4);
 
+	document.getElementById('curveinfo').value = "var bar_pos=["+bar_pos.join(',')+"];";
+	document.getElementById('moverange').min = -height;
+	document.getElementById('moverange').max = height;
+
+	document.getElementById('moverange').addEventListener("input",function(e){
+		bar_offset=parseInt(e.target.value);
+	});
+
+	document.getElementById('moverange').addEventListener("change",function(e){
+		for(i=0; i<bar_nb; i++){
+			bar_pos[i] -= bar_offset;
+		}
+		document.getElementById('moverange').value = 0;
+		bar_offset = 0
+	});
+
+
 	go();
 }
 
@@ -43,18 +62,17 @@ function go(){
     myscrolltext.draw(0);
 
 	for(i=0; i<bar_nb; i++){
-		mycanvasscrolltext.drawTile(mycanvas,i,i*bar_width,bar_pos[i],1,0,1,1);
+		mycanvasscrolltext.drawTile(mycanvas,i,i*bar_width,bar_pos[i]-bar_offset,1,0,1,1);
 
 	}
-
 	mouseX = mycanvas.MousePosX ;
     mouseY = mycanvas.MousePosY ;  
 
 	if (mycanvas.MouseButt==1) {    
 		bar_pos[Math.round((mouseX-bar_width/2)/bar_width)]=mouseY;
 	}
-
 	document.getElementById('curveinfo').value = "var bar_pos=["+bar_pos.join(',')+"];";
+
 
     MyMouseTracker.MouseUpdate();
 	requestAnimFrame( go );

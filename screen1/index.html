@@ -10,11 +10,19 @@
                         html {
                                 background-color: rgb(0, 0, 0);
                         }
+
+                        input[type=range][orient=vertical]{
+                                writing-mode: bt-lr; /* IE */
+                                -webkit-appearance: slider-vertical; /* WebKit */
+                                width: 8px;
+                                height: 175px;
+                                padding: 0 5px;
+                        }
                 </style>
         </head>
         <body onload="init();">
                 <center>
-                        <div id="main"></div>
+                        <div id="main"></div><input id="moverange" type="range" orient="vertical" />
                         <textarea id="curveinfo" name="curveinfo" rows="10" cols="80">Plop.</textarea>
                 </center>
         </body>
