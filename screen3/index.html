@@ -1,144 +1,74 @@
-<html>
+<!DOCTYPE HTML>
+<html> 
+<head> 
+	<script src="http://codef.santo.fr/codef/codef_core.js"></script> 
 
-<head>
+<script> 
 
-    <script src="//codef.santo.fr/codef/codef_core.js"></script>
-    <script src="//codef.santo.fr/codef/codef_3d.js"></script>
+var mycanvas;
+var redbox;
+			
+var rot=0;
+var blur=0;
+var blur_level=4;
 
+function init(){
+	mycanvas=new canvas(640,480,"main");
+	blur_canvas();		
+	redbox=new canvas(240,240);
+	redbox.fill('#FF0000');
+	redbox.setmidhandle();
+				
+	go();
+}
+			
+function blur_canvas(){
+	blur_level = document.getElementById("blur_level").value;
+	hue_level = document.getElementById("hue_level").value;
+	basealpha_level = document.getElementById("basealpha_level").value;
+	emboss_level = document.getElementById("emboss_level").value;
+	
+		mycanvas.contex.filter = new CanvasFilter([{
+       		filter: "gaussianBlur",
+       		stdDeviation: blur_level
+       	}, {
+                		filter: "convolveMatrix",
+                		kernelMatrix: [
+                    		[emboss_level, 0, 0],
+                    		[0, basealpha_level, 0],
+                    		[0, 0, -1*emboss_level]
+                		]
+            		}, {
+       		filter: "colorMatrix",
+       		type: "hueRotate",
+       		values: hue_level
+    	}, ]);
+}
 
-    <script>
-        var mycanvas;
-        var my3d;
+function go(){
+	mycanvas.fill('#000000');
 
+	redbox.draw(mycanvas,320,240,1,rot);
 
+	rot+=4;
+	if (rot>360) rot=0;										
 
-        var myobj = new Array();
-        var myobjvert = new Array();
-        myobjvert = [{
-            x: -100,
-            y: 0,
-            z: 100
-        }, {
-            x: 100,
-            y: 0,
-            z: 100
-        }, {
-            x: 100,
-            y: 0,
-            z: -100
-        }, {
-            x: -100,
-            y: 0,
-            z: -100
-        }, {
-            x: 0,
-            y: 200,
-            z: 0
-        }, {
-            x: 0,
-            y: -200,
-            z: 0
-        }, ];
+	requestAnimFrame( go );
+}
 
-        myobj = [{
-            p1: 1,
-            p2: 4,
-            p3: 0,
-            params: new MeshBasicMaterial({
-                color: 0x00aa00
-            })
-        }, {
-            p1: 2,
-            p2: 4,
-            p3: 1,
-            params: new MeshBasicMaterial({
-                color: 0xeeeeee
-            })
-        }, {
-            p1: 3,
-            p2: 4,
-            p3: 2,
-            params: new MeshBasicMaterial({
-                color: 0x00aa00
-            })
-        }, {
-            p1: 0,
-            p2: 4,
-            p3: 3,
-            params: new MeshBasicMaterial({
-                color: 0xeeeeee
-            })
-        }, {
-            p1: 0,
-            p2: 5,
-            p3: 1,
-            params: new MeshBasicMaterial({
-                color: 0xeeeeee
-            })
-        }, {
-            p1: 1,
-            p2: 5,
-            p3: 2,
-            params: new MeshBasicMaterial({
-                color: 0x00aa00
-            })
-        }, {
-            p1: 2,
-            p2: 5,
-            p3: 3,
-            params: new MeshBasicMaterial({
-                color: 0xeeeeee
-            })
-        }, {
-            p1: 3,
-            p2: 5,
-            p3: 0,
-            params: new MeshBasicMaterial({
-                color: 0x00aa00
-            })
-        }, ];
+</script> 
 
-        function init() {
-            mycanvas = new canvas(320, 240, "main");
-            my3d = new codef3D(mycanvas, 900, 40, 1, 1600);
-            my3d.faces(myobjvert, myobj, false, true);
-            mycanvas.contex.filter = new CanvasFilter([{
-                filter: "gaussianBlur",
-                stdDeviation: 15
-            }, {
-                filter: "convolveMatrix",
-                kernelMatrix: [
-                    [10, 0, 0],
-                    [0, 0.5, 0],
-                    [0, 0, -10]
-                ]
-            }, {
-                filter: "colorMatrix",
-                type: "hueRotate",
-                values: 90
-            }, ]);
-
-
-            go();
-        }
-
-        function go() {
-            mycanvas.fill('#000000');
-            my3d.group.rotation.x += 0.01;
-            my3d.group.rotation.y += 0.02;
-            my3d.group.rotation.z += 0.04;
-            my3d.draw();
-            requestAnimFrame(go);
-        }
-    </script>
-</head>
-
+</head> 
 <body onLoad="init();">
-    <center>
-        <div id="main"></div>
-
-    </center>
-</body>
-
-
+<center><div id="main"></div>
+<br>
+	Blur : <input id="blur_level" oninput="blur_canvas()" type=range min="0" max="255" value="0" step="1">
+	<br>
+	Hue : 	<input id="hue_level" oninput="blur_canvas()" type=range min="0" max="255" value="0" step="1">
+	<br>
+	BaseAlpha : 	<input id="basealpha_level" oninput="blur_canvas()" type=range min="0" max="1" value="0.5" step="0.01">
+	<br>
+	Emboss : 	<input id="emboss_level" oninput="blur_canvas()" type=range min="0" max="255" value="0.5" step="1">
+</center>
+</body> 
 </html>
